@@ -1,0 +1,19 @@
+/*
+Theme Name: Developer Portfolio
+Theme URI: https://blog.balakumar.dev
+Author: Bala Kumar
+Author URI: https://balakumar.dev
+Description: A modern dark theme for developer portfolios and tech blogs. Features terminal/code-editor aesthetics, smooth animations, and card-based layouts optimized for technical content.
+Version: 1.0.3
+Requires at least: 6.0
+Tested up to: 6.4
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: developer-portfolio
+Tags: dark, portfolio, developer, blog, one-column, custom-menu, featured-images, translation-ready
+
+This theme is designed for developers who want a clean, professional, and modern portfolio and blog.
+*/
+
+/* Base styles imported from assets/css/main.css */

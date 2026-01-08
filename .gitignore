@@ -1,0 +1,27 @@
+# Environment files
+.env
+
+# Database
+db-data/
+scripts/*.sql
+
+# WordPress uploads (can be large)
+wp-content/uploads/
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+
+# Docker
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+
+# Edge Browser Debug (Chrome DevTools MCP)
+.edge-debug-profile/
+.edge-debug-port
