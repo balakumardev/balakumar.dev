@@ -20,33 +20,22 @@ if (is_tax("project_type")) {
     $current_type_name = $current_type->name;
 }
 
-// Query projects
+// Query projects - Featured first, then the rest
 $paged = (get_query_var("paged")) ? get_query_var("paged") : 1;
 
-$args = array(
+// Base args for both queries
+$base_args = array(
     "post_type"      => "project",
     "post_status"    => "publish",
-    "posts_per_page" => 12,
-    "paged"          => $paged,
+    "posts_per_page" => -1,  // Get all for combining
     "orderby"        => "meta_value_num",
     "meta_key"       => "_project_sort_order",
     "order"          => "ASC",
-    "meta_query"     => array(
-        "relation" => "OR",
-        array(
-            "key"     => "_project_sort_order",
-            "compare" => "EXISTS",
-        ),
-        array(
-            "key"     => "_project_sort_order",
-            "compare" => "NOT EXISTS",
-        ),
-    ),
 );
 
 // Add taxonomy filter if viewing a specific type
 if (!empty($current_type_slug)) {
-    $args["tax_query"] = array(
+    $base_args["tax_query"] = array(
         array(
             "taxonomy" => "project_type",
             "field"    => "slug",
@@ -55,8 +44,55 @@ if (!empty($current_type_slug)) {
     );
 }
 
-$projects_query = new WP_Query($args);
-$total_projects = wp_count_posts("project")->publish;
+// Query featured projects first
+$featured_args = $base_args;
+$featured_args["meta_query"] = array(
+    array(
+        "key"     => "_project_featured",
+        "value"   => "1",
+        "compare" => "=",
+    ),
+);
+$featured_query = new WP_Query($featured_args);
+$featured_ids = wp_list_pluck($featured_query->posts, "ID");
+
+// Query non-featured projects
+$regular_args = $base_args;
+if (!empty($featured_ids)) {
+    $regular_args["post__not_in"] = $featured_ids;
+}
+$regular_args["meta_query"] = array(
+    "relation" => "OR",
+    array(
+        "key"     => "_project_featured",
+        "value"   => "1",
+        "compare" => "!=",
+    ),
+    array(
+        "key"     => "_project_featured",
+        "compare" => "NOT EXISTS",
+    ),
+);
+$regular_query = new WP_Query($regular_args);
+
+// Combine posts: featured first, then regular
+$all_project_ids = array_merge($featured_ids, wp_list_pluck($regular_query->posts, "ID"));
+$total_projects_filtered = count($all_project_ids);
+$total_projects = wp_count_posts("project")->publish;  // Global count for stats
+
+// Apply pagination to combined results
+$posts_per_page = 12;
+$offset = ($paged - 1) * $posts_per_page;
+$paginated_ids = array_slice($all_project_ids, $offset, $posts_per_page);
+
+// Final query with the ordered IDs
+$projects_query = new WP_Query(array(
+    "post_type"      => "project",
+    "post__in"       => !empty($paginated_ids) ? $paginated_ids : array(0),
+    "orderby"        => "post__in",
+    "posts_per_page" => $posts_per_page,
+));
+$projects_query->max_num_pages = ceil($total_projects_filtered / $posts_per_page);
 ?>
 
 <main id="primary" class="site-main projects-main">
