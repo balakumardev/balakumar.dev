@@ -116,6 +116,13 @@
     </footer>
 </div><!-- #page -->
 
+<?php
+// Render Featured Panel
+if (isset($GLOBALS['developer_portfolio_featured_panel'])) {
+    $GLOBALS['developer_portfolio_featured_panel']->render();
+}
+?>
+
 <?php wp_footer(); ?>
 
 </body>

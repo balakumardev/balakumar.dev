@@ -11,6 +11,15 @@ if (!defined("ABSPATH")) {
 }
 
 /**
+ * Include Featured Panel Files
+ */
+require_once get_template_directory() . '/inc/admin-settings.php';
+require_once get_template_directory() . '/inc/class-featured-panel.php';
+
+// Initialize featured panel globally
+$GLOBALS['developer_portfolio_featured_panel'] = new Developer_Portfolio_Featured_Panel();
+
+/**
  * Theme Setup
  */
 function developer_portfolio_setup() {
@@ -187,6 +196,41 @@ function developer_portfolio_scripts() {
     }
 }
 add_action("wp_enqueue_scripts", "developer_portfolio_scripts");
+
+/**
+ * Enqueue Featured Panel Assets
+ */
+function developer_portfolio_enqueue_featured_panel_assets() {
+    // Only enqueue if panel should display
+    if (!isset($GLOBALS['developer_portfolio_featured_panel'])) {
+        return;
+    }
+
+    $panel = $GLOBALS['developer_portfolio_featured_panel'];
+    if (!$panel->should_display()) {
+        return;
+    }
+
+    $theme_version = wp_get_theme()->get("Version");
+
+    // Featured Panel CSS
+    wp_enqueue_style(
+        "developer-portfolio-featured-panel",
+        get_template_directory_uri() . "/assets/css/featured-panel.css",
+        array("developer-portfolio-main"),
+        $theme_version
+    );
+
+    // Featured Panel JavaScript
+    wp_enqueue_script(
+        "developer-portfolio-featured-panel",
+        get_template_directory_uri() . "/assets/js/featured-panel.js",
+        array(),
+        $theme_version,
+        true
+    );
+}
+add_action("wp_enqueue_scripts", "developer_portfolio_enqueue_featured_panel_assets", 20);
 
 /**
  * Register Widget Areas
@@ -1134,6 +1178,66 @@ function developer_portfolio_enqueue_project_admin_scripts($hook) {
 }
 add_action('admin_enqueue_scripts', 'developer_portfolio_enqueue_project_admin_scripts');
 add_action('save_post_project', 'developer_portfolio_save_project_meta');
+
+/**
+ * Add Featured Post Meta Box
+ */
+function developer_portfolio_add_post_featured_meta_box() {
+    add_meta_box(
+        'post_featured',
+        __('Featured Post', 'developer-portfolio'),
+        'developer_portfolio_post_featured_callback',
+        'post',
+        'side',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'developer_portfolio_add_post_featured_meta_box');
+
+/**
+ * Featured Post Meta Box Callback
+ */
+function developer_portfolio_post_featured_callback($post) {
+    wp_nonce_field('developer_portfolio_post_featured', 'developer_portfolio_post_featured_nonce');
+    $featured = get_post_meta($post->ID, '_post_featured', true);
+    ?>
+    <p>
+        <label>
+            <input type="checkbox" id="post_featured" name="post_featured" value="1" <?php checked($featured, '1'); ?>>
+            <?php _e('Feature this post', 'developer-portfolio'); ?>
+        </label>
+    </p>
+    <p class="description" style="color: #666; font-size: 12px;">
+        <?php _e('Featured posts appear in the floating spotlight panel across your site.', 'developer-portfolio'); ?>
+    </p>
+    <?php
+}
+
+/**
+ * Save Featured Post Meta
+ */
+function developer_portfolio_save_post_featured_meta($post_id) {
+    // Check nonce
+    if (!isset($_POST['developer_portfolio_post_featured_nonce']) ||
+        !wp_verify_nonce($_POST['developer_portfolio_post_featured_nonce'], 'developer_portfolio_post_featured')) {
+        return;
+    }
+
+    // Check autosave
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    // Check permissions
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    // Save featured checkbox
+    $featured = isset($_POST['post_featured']) ? '1' : '0';
+    update_post_meta($post_id, '_post_featured', $featured);
+}
+add_action('save_post_post', 'developer_portfolio_save_post_featured_meta');
 
 /**
  * Get project icon SVG by name

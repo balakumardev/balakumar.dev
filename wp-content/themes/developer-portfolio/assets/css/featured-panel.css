@@ -1,0 +1,406 @@
+/**
+ * Featured Panel Styles
+ *
+ * Styles for the floating featured content panel.
+ *
+ * @package Developer_Portfolio
+ * @since 1.1.0
+ */
+
+/* ==========================================================================
+   Panel Container
+   ========================================================================== */
+
+.featured-panel {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    font-family: var(--font-sans);
+}
+
+.featured-panel.panel-position-right {
+    right: 0;
+    flex-direction: row;
+}
+
+.featured-panel.panel-position-left {
+    left: 0;
+    flex-direction: row-reverse;
+}
+
+/* Hide on mobile when configured */
+.featured-panel.hide-on-mobile {
+    display: flex;
+}
+
+@media (max-width: 1023px) {
+    .featured-panel.hide-on-mobile {
+        display: none;
+    }
+}
+
+/* ==========================================================================
+   Collapsed Tab
+   ========================================================================== */
+
+.featured-panel-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    padding: var(--space-lg) var(--space-sm);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--color-accent-primary);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.panel-position-right .featured-panel-tab {
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    border-right: none;
+}
+
+.panel-position-left .featured-panel-tab {
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    border-left: none;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+}
+
+.featured-panel-tab:hover {
+    background: var(--color-bg-hover);
+    border-color: var(--color-accent-primary);
+}
+
+.featured-panel-tab .tab-icon {
+    flex-shrink: 0;
+}
+
+.featured-panel-tab .tab-text {
+    white-space: nowrap;
+}
+
+/* Hide tab when panel is expanded */
+.featured-panel:not(.is-collapsed) .featured-panel-tab {
+    display: none;
+}
+
+/* ==========================================================================
+   Panel Content
+   ========================================================================== */
+
+.featured-panel-content {
+    width: 320px;
+    max-height: 80vh;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+    overflow: hidden;
+    transition: all var(--transition-base);
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-position-right .featured-panel-content {
+    border-radius: var(--border-radius-lg) 0 0 var(--border-radius-lg);
+    border-right: none;
+}
+
+.panel-position-left .featured-panel-content {
+    border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0;
+    border-left: none;
+}
+
+/* Collapsed state */
+.featured-panel.is-collapsed .featured-panel-content {
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+    border: none;
+    box-shadow: none;
+}
+
+/* ==========================================================================
+   Panel Header
+   ========================================================================== */
+
+.featured-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--border-color);
+    background: linear-gradient(180deg, rgba(100, 255, 218, 0.05) 0%, transparent 100%);
+}
+
+.featured-panel-title {
+    font-family: var(--font-mono);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.featured-panel-title .bracket {
+    color: var(--color-accent-primary);
+}
+
+.featured-panel-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.featured-panel-close:hover {
+    background: var(--color-bg-hover);
+    border-color: var(--color-accent-primary);
+    color: var(--color-accent-primary);
+}
+
+/* ==========================================================================
+   Panel Body
+   ========================================================================== */
+
+.featured-panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-md) 0;
+}
+
+/* Custom scrollbar */
+.featured-panel-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.featured-panel-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.featured-panel-body::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.featured-panel-body::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent-primary);
+}
+
+/* ==========================================================================
+   Featured Sections
+   ========================================================================== */
+
+.featured-section {
+    padding: 0 var(--space-lg);
+}
+
+.featured-section + .featured-section {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--border-color);
+}
+
+.featured-section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-md) 0;
+}
+
+.featured-section-title .section-icon {
+    color: var(--color-accent-primary);
+}
+
+/* ==========================================================================
+   Featured List
+   ========================================================================== */
+
+.featured-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.featured-item {
+    margin-bottom: var(--space-xs);
+}
+
+.featured-item:last-child {
+    margin-bottom: 0;
+}
+
+.featured-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+}
+
+.featured-link:hover {
+    background: var(--color-bg-hover);
+    border-color: var(--border-color);
+}
+
+.featured-link:hover .featured-arrow {
+    transform: translateX(4px);
+    opacity: 1;
+}
+
+.featured-link:hover .featured-name {
+    color: var(--color-accent-primary);
+}
+
+/* ==========================================================================
+   Featured Item Components
+   ========================================================================== */
+
+.featured-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--gradient-card);
+    border-radius: var(--border-radius);
+    color: var(--color-accent-primary);
+}
+
+.featured-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.featured-icon-post {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
+    color: var(--color-accent-purple);
+}
+
+.featured-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.featured-name {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color var(--transition-fast);
+}
+
+.featured-meta {
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.featured-arrow {
+    flex-shrink: 0;
+    color: var(--color-accent-primary);
+    opacity: 0;
+    transform: translateX(0);
+    transition: all var(--transition-fast);
+}
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.featured-panel.panel-position-right:not(.is-collapsed) .featured-panel-content {
+    animation: slideInRight var(--transition-slow) ease-out;
+}
+
+.featured-panel.panel-position-left:not(.is-collapsed) .featured-panel-content {
+    animation: slideInLeft var(--transition-slow) ease-out;
+}
+
+/* ==========================================================================
+   Focus States (Accessibility)
+   ========================================================================== */
+
+.featured-panel-tab:focus-visible,
+.featured-panel-close:focus-visible,
+.featured-link:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .featured-panel-content,
+    .featured-link,
+    .featured-arrow,
+    .featured-panel-tab,
+    .featured-panel-close {
+        transition: none;
+    }
+
+    .featured-panel.panel-position-right:not(.is-collapsed) .featured-panel-content,
+    .featured-panel.panel-position-left:not(.is-collapsed) .featured-panel-content {
+        animation: none;
+    }
+}

@@ -211,35 +211,56 @@ get_header();
                 <!-- Main Content -->
                 <div class="single-project-content animate-on-scroll" style="--delay: 0.2s;">
                     <?php
-                    // Render content with error handling
-                    ob_start();
+                    // Check for documentation in meta field first
+                    $documentation = get_post_meta(get_the_ID(), "_project_documentation", true);
                     $content_rendered = false;
                     $show_placeholder = false;
 
-                    try {
-                        the_content();
-                        $output = ob_get_clean();
-                        $output_text = trim(strip_tags($output));
-                        $excerpt_text = trim(get_the_excerpt());
+                    if (!empty($documentation)) {
+                        // Render markdown documentation using Parsedown from wp-githuber-md plugin
+                        $parsedown_path = WP_PLUGIN_DIR . '/wp-githuber-md/vendor/erusev/parsedown/Parsedown.php';
 
-                        // Check if content is meaningful (not same as excerpt and has enough content)
-                        $is_same_as_excerpt = similar_text($output_text, $excerpt_text) > (strlen($excerpt_text) * 0.8);
-                        $is_too_short = strlen($output_text) < 200;
-
-                        if (!empty($output_text) && !$is_same_as_excerpt && !$is_too_short) {
-                            echo $output;
-                            $content_rendered = true;
+                        if (file_exists($parsedown_path)) {
+                            if (!class_exists('Parsedown')) {
+                                require_once $parsedown_path;
+                            }
+                            $parsedown = new Parsedown();
+                            $parsedown->setSafeMode(true);
+                            $html = $parsedown->text($documentation);
+                            echo '<div class="markdown-content project-documentation">' . $html . '</div>';
                         } else {
+                            // Fallback: display as preformatted text
+                            echo '<div class="markdown-content project-documentation"><pre>' . esc_html($documentation) . '</pre></div>';
+                        }
+                        $content_rendered = true;
+                    } else {
+                        // Fall back to post content
+                        ob_start();
+                        try {
+                            the_content();
+                            $output = ob_get_clean();
+                            $output_text = trim(strip_tags($output));
+                            $excerpt_text = trim(get_the_excerpt());
+
+                            // Check if content is meaningful (not same as excerpt and has enough content)
+                            $is_same_as_excerpt = similar_text($output_text, $excerpt_text) > (strlen($excerpt_text) * 0.8);
+                            $is_too_short = strlen($output_text) < 200;
+
+                            if (!empty($output_text) && !$is_same_as_excerpt && !$is_too_short) {
+                                echo $output;
+                                $content_rendered = true;
+                            } else {
+                                $show_placeholder = true;
+                            }
+                        } catch (Exception $e) {
+                            ob_end_clean();
+                            error_log("Single project content error: " . $e->getMessage() . " in project ID: " . get_the_ID());
+                            $show_placeholder = true;
+                        } catch (Error $e) {
+                            ob_end_clean();
+                            error_log("Single project content error: " . $e->getMessage() . " in project ID: " . get_the_ID());
                             $show_placeholder = true;
                         }
-                    } catch (Exception $e) {
-                        ob_end_clean();
-                        error_log("Single project content error: " . $e->getMessage() . " in project ID: " . get_the_ID());
-                        $show_placeholder = true;
-                    } catch (Error $e) {
-                        ob_end_clean();
-                        error_log("Single project content error: " . $e->getMessage() . " in project ID: " . get_the_ID());
-                        $show_placeholder = true;
                     }
 
                     if ($show_placeholder || !$content_rendered) :
