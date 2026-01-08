@@ -110,6 +110,7 @@
 function developer_portfolio_fallback_menu() {
     echo "<ul id=\"primary-menu\" class=\"primary-menu\">";
     echo "<li class=\"menu-item\"><a href=\"" . esc_url(home_url("/")) . "\">Home</a></li>";
+    echo "<li class=\"menu-item\"><a href=\"" . esc_url(home_url("/projects/")) . "\">Projects</a></li>";
     echo "<li class=\"menu-item\"><a href=\"" . esc_url(home_url("/blog")) . "\">Blog</a></li>";
     echo "<li class=\"menu-item\"><a href=\"" . esc_url(home_url("/about")) . "\">About</a></li>";
     echo "</ul>";
