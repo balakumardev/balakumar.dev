@@ -167,6 +167,7 @@ $total_projects = wp_count_posts("project")->publish;
                                     </svg>
                                 </span>
                             <?php endif; ?>
+                            <?php developer_portfolio_edit_button(get_the_ID(), 'edit-button-card'); ?>
                         </div>
 
                         <!-- Project Type Badge -->

@@ -89,6 +89,7 @@ get_header();
                 <!-- Project Title -->
                 <h1 class="single-project-title animate-on-scroll" style="--delay: 0.2s;">
                     <?php the_title(); ?>
+                    <?php developer_portfolio_edit_button(get_the_ID(), 'edit-button-single'); ?>
                 </h1>
 
                 <!-- Project Excerpt -->
@@ -132,6 +133,14 @@ get_header();
                             </svg>
                             <span>View on GitHub</span>
                         </a>
+                    <?php else : ?>
+                        <span class="project-action-btn project-action-coming-soon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                            <span>Coming Soon</span>
+                        </span>
                     <?php endif; ?>
 
                     <?php

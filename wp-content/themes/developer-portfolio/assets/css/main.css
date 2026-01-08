@@ -5841,6 +5841,14 @@ html:not(.js) .animate-on-scroll {
     box-shadow: var(--shadow-md);
 }
 
+.project-action-coming-soon {
+    background: transparent;
+    border: 1px solid var(--color-text-muted);
+    color: var(--color-text-muted);
+    cursor: default;
+    opacity: 0.7;
+}
+
 .project-action-demo {
     background: transparent;
     border: 1px solid var(--color-accent-primary);
@@ -6533,5 +6541,60 @@ html:not(.js) .animate-on-scroll {
 @media (max-width: 480px) {
     .screenshots-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
+   Admin Edit Buttons (visible only when logged in as admin)
+   ========================================================================== */
+
+.admin-edit-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--color-accent-primary);
+    background: rgba(100, 255, 218, 0.1);
+    border: 1px solid var(--color-accent-primary);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    opacity: 0.7;
+    z-index: 10;
+}
+
+.admin-edit-button:hover {
+    opacity: 1;
+    background: rgba(100, 255, 218, 0.2);
+    transform: translateY(-1px);
+}
+
+.admin-edit-button svg {
+    flex-shrink: 0;
+}
+
+/* Card edit button - positioned in top right */
+.edit-button-card {
+    position: absolute;
+    top: var(--space-sm);
+    right: var(--space-sm);
+}
+
+/* Single page edit button - inline near title */
+.edit-button-single {
+    margin-left: var(--space-md);
+    vertical-align: middle;
+}
+
+/* Hide edit button text on small screens */
+@media (max-width: 480px) {
+    .admin-edit-button span {
+        display: none;
+    }
+    .admin-edit-button {
+        padding: 6px;
     }
 }

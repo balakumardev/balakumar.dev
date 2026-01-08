@@ -83,7 +83,8 @@ function developer_portfolio_safe_call($callback, $default = '') {
                 <h1 class="single-title animate-on-scroll" style="--delay: 0.1s;">
                     <?php echo esc_html($post_title); ?>
                 </h1>
-                
+                <?php developer_portfolio_edit_button(get_the_ID(), 'edit-button-single'); ?>
+
                 <?php if (has_excerpt()) : ?>
                     <p class="single-excerpt animate-on-scroll" style="--delay: 0.2s;">
                         <?php echo esc_html(get_the_excerpt()); ?>

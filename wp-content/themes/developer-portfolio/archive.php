@@ -140,6 +140,7 @@ if (is_category()) {
                                 </svg>
                                 <?php echo $reading_time; ?> min read
                             </span>
+                            <?php developer_portfolio_edit_button(get_the_ID(), 'edit-button-card'); ?>
                         </div>
                         
                         <h2 class="post-card-title">

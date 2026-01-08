@@ -856,6 +856,18 @@ function developer_portfolio_register_projects_cpt() {
 add_action('init', 'developer_portfolio_register_projects_cpt', 0);
 
 /**
+ * Disable Block Editor for Projects
+ * The custom meta boxes use jQuery which doesn't work well with Gutenberg
+ */
+function developer_portfolio_disable_gutenberg_for_projects($use_block_editor, $post_type) {
+    if ($post_type === 'project') {
+        return false;
+    }
+    return $use_block_editor;
+}
+add_filter('use_block_editor_for_post_type', 'developer_portfolio_disable_gutenberg_for_projects', 10, 2);
+
+/**
  * Register Project Type Taxonomy
  */
 function developer_portfolio_register_project_type_taxonomy() {
@@ -935,7 +947,7 @@ function developer_portfolio_add_project_meta_boxes() {
         __('Project Details', 'developer-portfolio'),
         'developer_portfolio_project_details_callback',
         'project',
-        'normal',
+        'side',
         'high'
     );
 }
@@ -1571,3 +1583,46 @@ add_action('init', function() {
         }
     }
 }, 99);
+
+/**
+ * Output an edit button for the current or specified post
+ *
+ * Only displays for users who can edit the post.
+ *
+ * @param int|null $post_id Optional post ID. Defaults to current post.
+ * @param string $class Additional CSS class for the button.
+ * @return void
+ */
+function developer_portfolio_edit_button($post_id = null, $class = '') {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    $edit_url = get_edit_post_link($post_id);
+    if (!$edit_url) {
+        return;
+    }
+
+    $classes = 'admin-edit-button';
+    if ($class) {
+        $classes .= ' ' . esc_attr($class);
+    }
+
+    printf(
+        '<a href="%s" class="%s" title="%s" aria-label="%s">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            <span>Edit</span>
+        </a>',
+        esc_url($edit_url),
+        $classes,
+        esc_attr__('Edit this item', 'developer-portfolio'),
+        esc_attr__('Edit this item', 'developer-portfolio')
+    );
+}
