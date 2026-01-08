@@ -32,19 +32,22 @@
     <header id="masthead" class="site-header">
         <div class="header-container">
             <div class="site-branding">
-                <?php if (has_custom_logo()) : ?>
-                    <div class="site-logo">
-                        <?php the_custom_logo(); ?>
-                    </div>
-                <?php else : ?>
-                    <a href="<?php echo esc_url(home_url("/")); ?>" class="site-title-link">
-                        <span class="site-title-bracket">{</span>
-                        <span class="site-title-text">
-                            <?php bloginfo("name"); ?>
-                        </span>
-                        <span class="site-title-bracket">}</span>
-                    </a>
-                <?php endif; ?>
+                <a href="<?php echo esc_url(home_url("/")); ?>" class="site-logo-link" aria-label="<?php bloginfo("name"); ?>">
+                    <svg class="site-logo-svg" viewBox="0 0 56 40" xmlns="http://www.w3.org/2000/svg">
+                        <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <!-- Opening bracket < -->
+                            <polyline points="8,12 2,20 8,28"/>
+                            <!-- Letter B -->
+                            <path d="M16,12 L16,28"/>
+                            <path d="M16,12 L24,12 C27,12 28,14 28,16 C28,18 27,20 24,20 L16,20"/>
+                            <path d="M16,20 L25,20 C28,20 29,22 29,24 C29,26 28,28 25,28 L16,28"/>
+                            <!-- Forward slash / -->
+                            <line x1="33" y1="28" x2="39" y2="12"/>
+                            <!-- Closing bracket > -->
+                            <polyline points="46,12 54,20 46,28"/>
+                        </g>
+                    </svg>
+                </a>
             </div>
 
             <nav id="site-navigation" class="main-navigation" aria-label="<?php esc_attr_e("Primary Menu", "developer-portfolio"); ?>">

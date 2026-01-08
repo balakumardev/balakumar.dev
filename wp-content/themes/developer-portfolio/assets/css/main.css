@@ -346,6 +346,29 @@ blockquote {
     object-fit: contain;
 }
 
+/* New SVG Logo */
+.site-logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: transform var(--transition-base);
+}
+
+.site-logo-link:hover {
+    transform: scale(1.05);
+}
+
+.site-logo-svg {
+    height: 36px;
+    width: auto;
+    color: var(--color-accent-primary);
+    transition: color var(--transition-base);
+}
+
+.site-logo-link:hover .site-logo-svg {
+    color: var(--color-text-white);
+}
+
 .site-title-link {
     display: flex;
     align-items: center;
@@ -1318,6 +1341,214 @@ blockquote {
 .project-link:hover {
     color: var(--color-accent-primary);
 }
+
+/* ==========================================================================
+   Experience Section - Premium Grid Design
+   ========================================================================== */
+
+.experience-section {
+    background: linear-gradient(180deg, var(--color-bg-secondary) 0%, var(--color-bg-primary) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background decoration */
+.experience-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(rgba(100, 255, 218, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+}
+
+/* Experience Grid */
+.experience-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-xl);
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Experience Card */
+.experience-card {
+    position: relative;
+    background: rgba(17, 34, 64, 0.6);
+    border-radius: 20px;
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.experience-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(100, 255, 218, 0.3);
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 60px rgba(100, 255, 218, 0.08);
+}
+
+/* Card Glow Effect */
+.experience-card-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    background: radial-gradient(
+        600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(100, 255, 218, 0.06),
+        transparent 40%
+    );
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    border-radius: 20px;
+}
+
+.experience-card:hover .experience-card-glow {
+    opacity: 1;
+}
+
+/* Card Inner */
+.experience-card-inner {
+    position: relative;
+    z-index: 1;
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Logo Container */
+.experience-logo-container {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(100, 255, 218, 0.15);
+    padding: 16px;
+    margin-bottom: var(--space-lg);
+    transition: all 0.4s ease;
+}
+
+.experience-card:hover .experience-logo-container {
+    border-color: var(--accent-color, rgba(100, 255, 218, 0.4));
+    box-shadow: 0 0 30px rgba(100, 255, 218, 0.15);
+    transform: scale(1.05);
+}
+
+/* Logo */
+.experience-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* Use filter to colorize SVGs loaded as img (currentColor doesn't work in img tags) */
+    filter: brightness(0) invert(1);
+    opacity: 0.7;
+    transition: all 0.4s ease;
+}
+
+.experience-card:hover .experience-logo {
+    opacity: 1;
+    filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+}
+
+/* Company Name */
+.experience-company {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--color-text-white);
+    margin: 0 0 var(--space-xs) 0;
+    font-family: var(--font-mono);
+}
+
+/* Role */
+.experience-role {
+    font-size: var(--text-sm);
+    color: var(--accent-color, var(--color-accent-primary));
+    font-family: var(--font-mono);
+    margin: 0 0 var(--space-md) 0;
+}
+
+/* Description */
+.experience-description {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0 0 var(--space-lg) 0;
+}
+
+/* Tech Stack */
+.experience-tech {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-sm);
+}
+
+.tech-pill {
+    font-size: 0.7rem;
+    padding: 0.35rem 0.7rem;
+    background: rgba(100, 255, 218, 0.08);
+    color: var(--color-accent-primary);
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    border: 1px solid rgba(100, 255, 218, 0.12);
+    transition: all var(--transition-base);
+}
+
+.experience-card:hover .tech-pill {
+    background: rgba(100, 255, 218, 0.12);
+    border-color: rgba(100, 255, 218, 0.2);
+}
+
+/* Accent Bar at Bottom */
+.experience-card-accent {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg,
+        transparent,
+        var(--accent-color, var(--color-accent-primary)),
+        transparent
+    );
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.experience-card:hover .experience-card-accent {
+    opacity: 1;
+}
+
+/* Staggered Animation */
+.experience-card {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.experience-card.animate-on-scroll.is-visible {
+    animation: cardFadeIn 0.6s ease forwards;
+    animation-delay: var(--delay, 0s);
+}
+
+@keyframes cardFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 
 /* ==========================================================================
    Categories Section
@@ -2775,7 +3006,13 @@ pre[class*="language-"]::before {
     .projects-grid {
         grid-template-columns: 1fr;
     }
-    
+
+    /* Experience Grid Tablet */
+    .experience-grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+    }
+
     .categories-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -2851,7 +3088,35 @@ pre[class*="language-"]::before {
     .categories-grid {
         grid-template-columns: 1fr;
     }
-    
+
+    /* Experience Grid Mobile */
+    .experience-card-inner {
+        padding: var(--space-lg);
+    }
+
+    .experience-logo-container {
+        width: 64px;
+        height: 64px;
+        padding: 12px;
+    }
+
+    .experience-company {
+        font-size: var(--text-lg);
+    }
+
+    .experience-role {
+        font-size: 0.8rem;
+    }
+
+    .experience-description {
+        font-size: 0.85rem;
+    }
+
+    .tech-pill {
+        font-size: 0.65rem;
+        padding: 0.3rem 0.6rem;
+    }
+
     .single-header {
         padding: var(--space-lg);
     }

@@ -1,0 +1,8 @@
+<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+  <!-- Ultra minimal B - just essential strokes -->
+  <g fill="none" stroke="#64ffda" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10,6 L10,34"/>
+    <path d="M10,6 L24,6 A8,8 0 0 1 24,20 L10,20"/>
+    <path d="M10,20 L26,20 A7,7 0 0 1 26,34 L10,34"/>
+  </g>
+</svg>

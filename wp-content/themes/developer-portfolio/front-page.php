@@ -46,7 +46,7 @@ get_header();
                             <span class="terminal-command">cat role.txt</span>
                         </div>
                         <div class="terminal-output">
-                            <p class="hero-title">Senior Software Engineer @ <span class="highlight-intuit">Intuit</span></p>
+                            <p class="hero-title">Senior Software Engineer</p>
                         </div>
                         <div class="terminal-line">
                             <span class="terminal-prompt">$</span>
@@ -105,6 +105,94 @@ get_header();
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 5v14M5 12l7 7 7-7"/>
                 </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="section experience-section">
+        <div class="section-container">
+            <header class="section-header animate-on-scroll">
+                <span class="section-tag">// Where I Have Worked</span>
+                <h2 class="section-title">
+                    <span class="title-bracket">{</span>
+                    Experience
+                    <span class="title-bracket">}</span>
+                </h2>
+                <p class="section-subtitle">Building impactful products at industry-leading companies</p>
+            </header>
+
+            <div class="experience-grid">
+                <?php
+                $companies = array(
+                    array(
+                        "name" => "Intuit",
+                        "role" => "Senior Software Engineer",
+                        "description" => "E-commerce platform development, shopping cart systems, and GraphQL APIs serving millions of users.",
+                        "logo" => "intuit",
+                        "tech" => array("Java", "GraphQL", "Kafka", "Kubernetes"),
+                        "color" => "#0077c5"
+                    ),
+                    array(
+                        "name" => "Factors.AI",
+                        "role" => "Senior Software Developer",
+                        "description" => "AI-powered B2B marketing analytics platform backend, building scalable APIs for account intelligence and intent signals.",
+                        "logo" => "factors",
+                        "tech" => array("Go", "PostgreSQL", "Redis", "Kubernetes"),
+                        "color" => "#6366f1"
+                    ),
+                    array(
+                        "name" => "VMware",
+                        "role" => "Senior MTS",
+                        "description" => "Enterprise virtualization solutions and cloud infrastructure tools powering global data centers.",
+                        "logo" => "vmware",
+                        "tech" => array("Python", "Go", "vSphere", "NSX"),
+                        "color" => "#607078"
+                    ),
+                    array(
+                        "name" => "Amazon",
+                        "role" => "Software Development Engineer",
+                        "description" => "Speech middleware and Alexa SDK components, enabling voice interactions for millions of Echo devices.",
+                        "logo" => "amazon",
+                        "tech" => array("Java", "AWS", "DynamoDB", "Lambda"),
+                        "color" => "#ff9900"
+                    ),
+                    array(
+                        "name" => "Dell",
+                        "role" => "Software Development Engineer",
+                        "description" => "Cloud-native microservices and automation frameworks, streamlining enterprise IT operations at scale.",
+                        "logo" => "dell",
+                        "tech" => array("Java", "Spring", "Docker", "Jenkins"),
+                        "color" => "#007db8"
+                    ),
+                );
+
+                $company_index = 0;
+                foreach ($companies as $company) :
+                ?>
+                    <article class="experience-card animate-on-scroll" style="--delay: <?php echo $company_index * 0.1; ?>s; --accent-color: <?php echo $company['color']; ?>;">
+                        <div class="experience-card-glow"></div>
+                        <div class="experience-card-inner">
+                            <div class="experience-logo-container">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/logos/<?php echo $company['logo']; ?>.svg"
+                                     alt="<?php echo esc_attr($company['name']); ?>"
+                                     class="experience-logo">
+                            </div>
+                            <h3 class="experience-company"><?php echo esc_html($company["name"]); ?></h3>
+                            <p class="experience-role"><?php echo esc_html($company["role"]); ?></p>
+                            <p class="experience-description"><?php echo esc_html($company["description"]); ?></p>
+                            <div class="experience-tech">
+                                <?php foreach ($company["tech"] as $tech) : ?>
+                                    <span class="tech-pill"><?php echo esc_html($tech); ?></span>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <div class="experience-card-accent"></div>
+                    </article>
+                <?php
+                    $company_index++;
+                endforeach;
+                ?>
             </div>
         </div>
     </section>
@@ -371,6 +459,20 @@ function developer_portfolio_get_category_icon_svg($icon) {
         "sitemap" => "<svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"9\" y=\"2\" width=\"6\" height=\"6\" rx=\"1\"/><rect x=\"2\" y=\"16\" width=\"6\" height=\"6\" rx=\"1\"/><rect x=\"9\" y=\"16\" width=\"6\" height=\"6\" rx=\"1\"/><rect x=\"16\" y=\"16\" width=\"6\" height=\"6\" rx=\"1\"/><path d=\"M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3M12 8v4\"/></svg>",
         "cloud" => "<svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z\"/></svg>",
     );
-    
+
     return isset($icons[$icon]) ? $icons[$icon] : $icons["file-alt"];
+}
+
+/**
+ * Get experience icon SVG
+ */
+function developer_portfolio_get_experience_icon($icon) {
+    $icons = array(
+        "building" => "<svg width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z\"/><path d=\"M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2\"/><path d=\"M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2\"/><path d=\"M10 6h4\"/><path d=\"M10 10h4\"/><path d=\"M10 14h4\"/><path d=\"M10 18h4\"/></svg>",
+        "cloud" => "<svg width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z\"/></svg>",
+        "server" => "<svg width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect width=\"20\" height=\"8\" x=\"2\" y=\"2\" rx=\"2\" ry=\"2\"/><rect width=\"20\" height=\"8\" x=\"2\" y=\"14\" rx=\"2\" ry=\"2\"/><line x1=\"6\" x2=\"6.01\" y1=\"6\" y2=\"6\"/><line x1=\"6\" x2=\"6.01\" y1=\"18\" y2=\"18\"/></svg>",
+        "database" => "<svg width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><ellipse cx=\"12\" cy=\"5\" rx=\"9\" ry=\"3\"/><path d=\"M3 5V19A9 3 0 0 0 21 19V5\"/><path d=\"M3 12A9 3 0 0 0 21 12\"/></svg>",
+    );
+
+    return isset($icons[$icon]) ? $icons[$icon] : $icons["building"];
 }

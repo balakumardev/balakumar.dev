@@ -1,0 +1,11 @@
+<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+  <!-- Geometric minimal B logo -->
+  <g fill="none" stroke="#64ffda" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Vertical line -->
+    <line x1="12" y1="8" x2="12" y2="32"/>
+    <!-- Top curve -->
+    <path d="M12,8 L22,8 C27,8 30,11 30,15 C30,19 27,20 22,20 L12,20"/>
+    <!-- Bottom curve (slightly larger) -->
+    <path d="M12,20 L24,20 C29,20 32,23 32,27 C32,31 29,32 24,32 L12,32"/>
+  </g>
+</svg>

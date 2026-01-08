@@ -824,4 +824,27 @@
     // Expose utility for external use
     window.devPortfolioSafeExecute = safeExecute;
 
+    // Initialize Timeline Mouse Tracking
+    document.addEventListener("DOMContentLoaded", function() {
+        safeExecute(initTimelineEffects, "initTimelineEffects")();
+    });
+
+    // Experience Card Mouse Tracking for Spotlight Effect
+    function initTimelineEffects() {
+        var experienceCards = document.querySelectorAll(".experience-card");
+
+        if (!experienceCards.length) return;
+
+        experienceCards.forEach(function(card) {
+            card.addEventListener("mousemove", function(e) {
+                var rect = card.getBoundingClientRect();
+                var x = e.clientX - rect.left;
+                var y = e.clientY - rect.top;
+
+                card.style.setProperty("--mouse-x", x + "px");
+                card.style.setProperty("--mouse-y", y + "px");
+            });
+        });
+    }
+
 })();

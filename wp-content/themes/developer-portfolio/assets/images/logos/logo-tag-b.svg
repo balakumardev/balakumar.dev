@@ -1,0 +1,14 @@
+<svg viewBox="0 0 48 40" xmlns="http://www.w3.org/2000/svg">
+  <!-- HTML tag style: <B/> -->
+  <g fill="none" stroke="#64ffda" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Opening < -->
+    <polyline points="8,12 2,20 8,28"/>
+    <!-- Closing /> -->
+    <polyline points="40,12 46,20 40,28"/>
+    <line x1="36" y1="28" x2="42" y2="12"/>
+    <!-- Bold B in center -->
+    <path d="M18,12 L18,28"/>
+    <path d="M18,12 L26,12 C29,12 30,14 30,16 C30,18 29,20 26,20 L18,20"/>
+    <path d="M18,20 L27,20 C30,20 31,22 31,24 C31,26 30,28 27,28 L18,28"/>
+  </g>
+</svg>

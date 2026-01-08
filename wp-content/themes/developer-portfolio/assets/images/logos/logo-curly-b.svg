@@ -1,0 +1,12 @@
+<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+  <!-- Curly brackets { B } style logo -->
+  <g fill="none" stroke="#64ffda" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Left curly { -->
+    <path d="M8,10 C6,10 4,11 4,14 L4,17 C4,19 3,20 1,20 C3,20 4,21 4,23 L4,26 C4,29 6,30 8,30"/>
+    <!-- Right curly } -->
+    <path d="M32,10 C34,10 36,11 36,14 L36,17 C36,19 37,20 39,20 C37,20 36,21 36,23 L36,26 C36,29 34,30 32,30"/>
+    <!-- Letter B in center -->
+    <path d="M16,12 L16,28 M16,12 L22,12 C24,12 25,14 25,16 C25,18 24,19 22,19 L16,19"/>
+    <path d="M16,20 L23,20 C25,20 26,22 26,24 C26,26 25,28 23,28 L16,28"/>
+  </g>
+</svg>
