@@ -114,6 +114,7 @@
         safeExecute(initTypingAnimation, "initTypingAnimation")();
         safeExecute(initCategoryFilter, "initCategoryFilter")();
         safeExecute(initLoadMore, "initLoadMore")();
+        safeExecute(initTagNavOverflow, "initTagNavOverflow")();
     });
 
     // Header Scroll Effect
@@ -823,6 +824,109 @@
 
     // Expose utility for external use
     window.devPortfolioSafeExecute = safeExecute;
+
+    // Tag Navigation Overflow Handling
+    function initTagNavOverflow() {
+        var navList = document.getElementById("tag-nav-list");
+        var moreItem = document.getElementById("tag-nav-more");
+        var moreDropdown = document.getElementById("tag-nav-more-dropdown");
+        var navContainer = navList ? navList.closest(".tag-nav-container") : null;
+
+        if (!navList || !moreItem || !moreDropdown || !navContainer) return;
+
+        // Store original items - only direct children (excluding "More")
+        // Use :scope > to select only direct children, not nested dropdown items
+        var allItems = Array.prototype.slice.call(navList.querySelectorAll(":scope > .tag-nav-item:not(.tag-nav-more)"));
+        // Skip the first item which is "All"
+        var regularItems = allItems.slice(1);
+
+        // Get the label width (// topics)
+        var navLabel = navContainer.querySelector(".tag-nav-label");
+        var labelWidth = navLabel ? navLabel.offsetWidth : 0;
+
+        function handleOverflow() {
+            // Reset all items first - show them all to measure
+            regularItems.forEach(function(item) {
+                item.classList.remove("overflow-hidden");
+            });
+            moreItem.classList.remove("is-visible");
+
+            // Clear the More dropdown
+            moreDropdown.innerHTML = "";
+
+            // Get container width and compute available space
+            var containerRect = navContainer.getBoundingClientRect();
+            var containerPadding = 48; // Left + right padding (var(--space-lg) * 2)
+            var labelGap = 24; // Gap between label and list
+            var availableWidth = containerRect.width - containerPadding - labelWidth - labelGap;
+
+            // Measure the "More" button (make it visible temporarily)
+            moreItem.classList.add("is-visible");
+            var moreItemWidth = moreItem.offsetWidth + 8; // Add gap
+            moreItem.classList.remove("is-visible");
+
+            // Calculate visible items
+            var currentWidth = allItems[0].offsetWidth + 4; // "All" item + gap
+            var overflowItems = [];
+
+            for (var i = 0; i < regularItems.length; i++) {
+                var item = regularItems[i];
+                var itemWidth = item.offsetWidth + 4; // Include gap
+
+                // Check if adding this item would overflow
+                // Reserve space for "More" button if we might overflow
+                var wouldOverflow = currentWidth + itemWidth > availableWidth;
+                var wouldOverflowWithMore = currentWidth + itemWidth + moreItemWidth > availableWidth;
+
+                if (wouldOverflow || (wouldOverflowWithMore && i < regularItems.length - 1)) {
+                    // This item and all remaining items go to overflow
+                    for (var j = i; j < regularItems.length; j++) {
+                        overflowItems.push(regularItems[j]);
+                        regularItems[j].classList.add("overflow-hidden");
+                    }
+                    break;
+                }
+
+                currentWidth += itemWidth;
+            }
+
+            // Show/hide More button based on overflow
+            if (overflowItems.length > 0) {
+                moreItem.classList.add("is-visible");
+
+                // Clone overflow items to More dropdown
+                overflowItems.forEach(function(item) {
+                    var clone = item.cloneNode(true);
+                    clone.classList.remove("overflow-hidden");
+                    // Reset animation states for dropdown items
+                    clone.style.opacity = "1";
+                    clone.style.transform = "none";
+                    moreDropdown.appendChild(clone);
+                });
+            }
+        }
+
+        // Run on load
+        handleOverflow();
+
+        // Use ResizeObserver on the container for accurate width tracking
+        if ("ResizeObserver" in window) {
+            var resizeObserver = new ResizeObserver(debounce(function() {
+                handleOverflow();
+            }, 50));
+            resizeObserver.observe(navContainer);
+        } else {
+            // Fallback for older browsers
+            window.addEventListener("resize", debounce(handleOverflow, 100));
+        }
+
+        // Also handle font loading which can affect widths
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(function() {
+                handleOverflow();
+            });
+        }
+    }
 
     // Initialize Timeline Mouse Tracking
     document.addEventListener("DOMContentLoaded", function() {

@@ -101,6 +101,16 @@
         </div>
     </header>
 
+    <?php
+    // Show tag navigation on blog listing, category/tag archives, single blog posts, and search results
+    // Note: is_home() && !is_front_page() = blog listing when static front page is set
+    // is_category() || is_tag() = category and tag archives only (not project archives)
+    // is_single() && get_post_type() === 'post' = only blog posts, not custom post types
+    if ((is_home() && !is_front_page()) || is_page('blog') || is_category() || is_tag() || (is_single() && get_post_type() === 'post') || is_search()) {
+        developer_portfolio_render_tag_nav();
+    }
+    ?>
+
     <div id="content" class="site-content">
 <?php
 
@@ -111,7 +121,7 @@ function developer_portfolio_fallback_menu() {
     echo "<ul id=\"primary-menu\" class=\"primary-menu\">";
     echo "<li class=\"menu-item\"><a href=\"" . esc_url(home_url("/")) . "\">Home</a></li>";
     echo "<li class=\"menu-item\"><a href=\"" . esc_url(home_url("/projects/")) . "\">Projects</a></li>";
-    echo "<li class=\"menu-item\"><a href=\"" . esc_url(home_url("/blog")) . "\">Blog</a></li>";
+    echo "<li class=\"menu-item\"><a href=\"" . esc_url(home_url("/blog/")) . "\">Blog</a></li>";
     echo "<li class=\"menu-item\"><a href=\"" . esc_url(home_url("/about")) . "\">About</a></li>";
     echo "</ul>";
 }

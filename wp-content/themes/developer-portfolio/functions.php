@@ -15,6 +15,7 @@ if (!defined("ABSPATH")) {
  */
 require_once get_template_directory() . '/inc/admin-settings.php';
 require_once get_template_directory() . '/inc/class-featured-panel.php';
+require_once get_template_directory() . '/inc/tag-navigation.php';
 
 // Initialize featured panel globally
 $GLOBALS['developer_portfolio_featured_panel'] = new Developer_Portfolio_Featured_Panel();
