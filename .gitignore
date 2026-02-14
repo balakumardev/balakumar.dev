@@ -24,3 +24,17 @@ wp-content/uploads/
 
 # Chrome DevTools MCP
 .chrome-debug/
+
+# Third-party plugins (installed on server, no need to version control)
+wp-content/plugins/akismet/
+wp-content/plugins/hello.php
+wp-content/plugins/wp-githuber-md/
+wp-content/plugins/wp-feature-api-agent/
+
+# Default WordPress themes (ship with core)
+wp-content/themes/twentytwentythree/
+wp-content/themes/twentytwentyfour/
+wp-content/themes/twentytwentyfive/
+
+# Inactive custom themes
+wp-content/themes/balakumar-dark/
