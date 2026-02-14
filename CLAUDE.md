@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project manages the WordPress blog at **https://blog.balakumar.dev** with full AI control via MCP servers.
+This project manages the WordPress blog at **https://blog.balakumar.dev** via SSH and WP-CLI.
 
 ## Access Details
 
@@ -16,21 +16,14 @@ This project manages the WordPress blog at **https://blog.balakumar.dev** with f
 | **Themes Path** | `/home/balakuma/blog.balakumar.dev/wp-content/themes/` |
 | **Plugins Path** | `/home/balakuma/blog.balakumar.dev/wp-content/plugins/` |
 
-## MCP Servers Configured
+## Server Access
 
-### 1. WordPress MCP (`wordpress`)
-- **Purpose**: Content management (posts, pages, media, settings)
-- **Package**: `@automattic/mcp-wordpress-remote`
-- **Auth**: JWT token (expires ~Feb 2026)
-- **Endpoint**: `/wp-json/wp/v2/wpmcp/streamable`
-
-### 2. Direct SSH Access (via Bash)
-- **Purpose**: Direct file access (themes, CSS, PHP, JS)
-- **Method**: Use Bash tool with SSH command (SSH MCP was unreliable)
+### SSH (via Bash tool)
+- **Purpose**: Direct file access (themes, CSS, PHP, JS), deployments
 - **Auth**: SSH key at `/Users/bkumara/Downloads/wordpress_ssh_key`
 
-### 3. WP-CLI (on server)
-- **Purpose**: WordPress management from command line (posts, plugins, themes, DB, options, search-replace)
+### WP-CLI (on server)
+- **Purpose**: WordPress management (posts, plugins, themes, DB, options, search-replace)
 - **Binary**: `/home/balakuma/bin/wp` (wrapper script that calls PHP CLI)
 - **Phar**: `/home/balakuma/bin/wp-cli.phar`
 - **PHP**: Uses `/usr/local/bin/php` (CLI SAPI — the default `/usr/bin/php` is CGI and won't work)
@@ -50,15 +43,7 @@ This project manages the WordPress blog at **https://blog.balakumar.dev** with f
 
 ## What Claude Can Do
 
-### Via WordPress MCP (Content)
-- Create, edit, delete posts and pages
-- Upload media files
-- Manage categories and tags
-- Update site settings
-- Manage comments
-- Work with custom post types
-
-### Via Direct SSH (Bash Tool)
+### Via SSH (Bash Tool)
 - Create custom themes from scratch
 - Edit theme CSS, PHP, JS files
 - Modify plugin files
@@ -155,24 +140,10 @@ $SSH_CMD "cd ~/blog.balakumar.dev && ~/bin/wp core version"
 | Site options | WP-CLI (`wp option get/update`) |
 | Clear cache | SSH (`rm -rf ~/lscache/*`) |
 
-## Current Themes Installed (Production)
+## Themes
 
-- **developer-portfolio** - Custom portfolio theme (active)
-- **balakumar-dark** - Custom dark theme variant
-- bedrock
-- bloghash
-- iceberg
-- twentytwentyfive
-- twentytwentyfour
-- twentytwentythree
-- twentytwentytwo
-
-## WordPress Plugins with MCP
-
-The following plugins are installed for MCP integration:
-- **JWT Authentication** - For API token auth
-- **WordPress Abilities API** - Exposes capabilities to MCP
-- **MCP Adapter** - Bridges MCP protocol to WordPress
+- **developer-portfolio** - Custom portfolio theme (active, tracked in git)
+- Other themes (balakumar-dark, twentytwenty*, bedrock, etc.) are on the server but not tracked in git
 
 ## Tag Navigation System
 
@@ -223,25 +194,6 @@ When creating new posts, follow these conventions:
 4. Hovering reveals nested children as dropdowns
 5. Each tag links to its archive page
 
-## API Endpoints
-
-| Endpoint | Purpose |
-|----------|---------|
-| `/wp-json/` | WordPress REST API root |
-| `/wp-json/wp/v2/` | Core REST API (posts, pages, media) |
-| `/wp-json/wp-abilities/v1/` | Abilities API |
-| `/wp-json/wp/v2/wpmcp/streamable` | MCP streaming endpoint |
-| `/wp-json/jwt-auth/v1/` | JWT authentication |
-
-## Token Expiry
-
-The JWT token expires on: **~February 6, 2026** (timestamp: 1770379850)
-
-To generate a new token when expired:
-1. Go to WordPress Admin
-2. Navigate to JWT Auth settings or use the API
-3. Generate new token and update `.mcp.json`
-
 ## Hosting Provider
 
 - **Type**: Shared hosting with cPanel
@@ -256,7 +208,6 @@ To generate a new token when expired:
 
 ```
 ~/personal/balakumar.dev/
-├── .mcp.json              # MCP server configuration
 ├── .env                   # Environment variables (not committed)
 ├── .gitignore             # Git ignore file
 ├── .github/workflows/     # CI/CD
@@ -511,16 +462,15 @@ UPDATE blog_options SET option_value = 'http://localhost:8082' WHERE option_name
 ### Installed Themes
 
 - **developer-portfolio** - Custom portfolio theme (active)
-- **balakumar-dark** - Custom dark theme variant
 
-### Installed Plugins (Essential Only)
+### Installed Plugins (Tracked in Git)
 
 - **merpress** - MermaidJS diagram support
 - **syntaxhighlighter** - Code syntax highlighting
-- **wp-githuber-md** - Markdown editor
 - **wordpress-mcp** - MCP protocol adapter
 - **wp-feature-api** - WordPress Feature API
-- **wp-feature-api-agent** - Feature API agent
+
+Other plugins (wp-githuber-md, akismet, etc.) are installed on the server but not tracked in git.
 
 ### Visual Testing with agent-browser
 
@@ -575,15 +525,9 @@ docker-compose restart wordpress
 2. Verify IP hasn't changed: `dig +short blog.balakumar.dev`
 3. Test manually: `ssh -i /Users/bkumara/Downloads/wordpress_ssh_key balakuma@107.161.23.124`
 
-### JWT Token Expired
-1. Check expiry: decode token at jwt.io
-2. Generate new token in WordPress admin
-3. Update `.mcp.json` with new token
-
-### WordPress API Not Responding
+### WordPress Not Responding
 1. Check if site is up: `curl -I https://blog.balakumar.dev`
-2. Verify REST API: `curl https://blog.balakumar.dev/wp-json/`
-3. Check if MCP plugins are active in WordPress admin
+2. Test WP-CLI: `ssh -i /Users/bkumara/Downloads/wordpress_ssh_key balakuma@107.161.23.124 "cd ~/blog.balakumar.dev && ~/bin/wp core version"`
 
 ---
 
