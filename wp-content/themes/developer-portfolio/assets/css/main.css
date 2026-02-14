@@ -3056,13 +3056,22 @@ pre[class*="language-"]::before {
     .header-container {
         padding: 0 var(--space-lg);
     }
-    
+
+    .header-actions {
+        margin-left: auto;
+    }
+
+    .main-navigation {
+        order: 3;
+        margin-left: var(--space-md);
+    }
+
     .primary-menu {
         position: fixed;
         top: var(--header-height);
         left: 0;
         right: 0;
-        bottom: 0;
+        height: calc(100vh - var(--header-height));
         flex-direction: column;
         align-items: center;
         justify-content: center;
@@ -3071,21 +3080,36 @@ pre[class*="language-"]::before {
         backdrop-filter: blur(10px);
         opacity: 0;
         visibility: hidden;
-        transition: all var(--transition-base);
+        transition: opacity var(--transition-base), visibility var(--transition-base);
         z-index: 999;
     }
-    
+
     .primary-menu.active {
         opacity: 1;
         visibility: visible;
     }
-    
+
     .primary-menu .menu-item a {
         font-size: var(--text-xl);
     }
-    
+
     .menu-toggle {
         display: block;
+    }
+
+    /* Expand header when mobile menu is open so the fixed menu overlay is not clipped.
+       backdrop-filter on .site-header creates a containing block for fixed children. */
+    body.menu-open .site-header {
+        height: 100vh;
+        overflow: visible;
+    }
+
+    body.menu-open .header-container {
+        height: var(--header-height);
+    }
+
+    body.menu-open {
+        overflow: hidden;
     }
     
     .hero-section {
@@ -7245,6 +7269,26 @@ html:not(.js) .animate-on-scroll {
         overflow-x: hidden;
     }
 
+    /* Fix CSS Grid overflow: grid items default to min-width:auto,
+       which prevents them from shrinking below content intrinsic width */
+    .single-container {
+        min-width: 0;
+    }
+
+    .single-content {
+        min-width: 0;
+        overflow-x: hidden;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+    }
+
+    /* Restore single post header offset when tag nav is hidden on mobile.
+       :has(.tag-navigation) still matches because the element is in the DOM,
+       even though it's display:none on mobile. */
+    .single-main {
+        padding-top: calc(var(--header-height) + var(--space-xl)) !important;
+    }
+
     /* Header fixes */
     .site-header {
         max-width: 100%;
@@ -7263,8 +7307,8 @@ html:not(.js) .animate-on-scroll {
     .single-content-wrapper {
         max-width: 100%;
         width: 100%;
-        padding-left: var(--space-md);
-        padding-right: var(--space-md);
+        padding-left: var(--space-lg);
+        padding-right: var(--space-lg);
         margin: 0;
         box-sizing: border-box;
     }
@@ -7353,7 +7397,25 @@ html:not(.js) .animate-on-scroll {
 
     .footer-container {
         max-width: 100%;
-        padding: 0 var(--space-md);
+        padding: var(--space-2xl) var(--space-md) var(--space-xl);
+    }
+
+    .footer-grid {
+        gap: var(--space-xl);
+        margin-bottom: var(--space-xl);
+    }
+
+    .footer-heading {
+        margin-bottom: var(--space-md);
+    }
+
+    .footer-copyright {
+        font-size: var(--text-xs);
+        word-break: break-word;
+    }
+
+    .footer-copyright .code-comment {
+        display: block;
     }
 
     /* Search overlay mobile constraints */
@@ -7371,7 +7433,6 @@ html:not(.js) .animate-on-scroll {
 
 /* Small mobile specific fixes */
 @media (max-width: 480px) {
-    /* Even tighter padding on small screens */
     .header-container {
         padding: 0 var(--space-sm);
     }
@@ -7379,8 +7440,8 @@ html:not(.js) .animate-on-scroll {
     .blog-container,
     .archive-container,
     .single-content-wrapper {
-        padding-left: var(--space-sm);
-        padding-right: var(--space-sm);
+        padding-left: var(--space-md);
+        padding-right: var(--space-md);
     }
 
     /* Blog header adjustments */
