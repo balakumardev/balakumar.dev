@@ -312,16 +312,20 @@ function developer_portfolio_get_category_icon($category_slug) {
  */
 function developer_portfolio_get_category_gradient($category_slug) {
     $gradients = array(
+        "ai-ml-cat"           => "gradient-ai",
         "ai"                  => "gradient-ai",
         "artificial-intelligence" => "gradient-ai",
         "machine-learning"    => "gradient-ai",
+        "backend-infra"       => "gradient-systems",
         "distributed-systems" => "gradient-systems",
         "backend"             => "gradient-systems",
         "microservices"       => "gradient-systems",
+        "dev-tools"           => "gradient-projects",
         "crash-courses"       => "gradient-courses",
         "tutorials"           => "gradient-courses",
         "projects"            => "gradient-projects",
         "programming"         => "gradient-projects",
+        "architecture"        => "gradient-cloud",
         "java"                => "gradient-java",
         "python"              => "gradient-python",
         "devops"              => "gradient-devops",

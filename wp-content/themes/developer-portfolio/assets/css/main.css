@@ -3453,7 +3453,7 @@ pre[class*="language-"]::before {
 
 .blog-tag,
 .archive-tag {
-    display: inline-block;
+    display: block;
     font-family: var(--font-mono);
     font-size: var(--text-sm);
     color: var(--color-accent-primary);
@@ -6918,6 +6918,7 @@ html:not(.js) .animate-on-scroll {
 .tag-nav-container {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: var(--space-lg);
     max-width: var(--max-width);
     margin: 0 auto;
@@ -6926,6 +6927,10 @@ html:not(.js) .animate-on-scroll {
 }
 
 .tag-nav-label {
+    position: absolute;
+    left: var(--space-lg);
+    top: 50%;
+    transform: translateY(-50%);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     color: var(--color-text-secondary);
@@ -6937,6 +6942,7 @@ html:not(.js) .animate-on-scroll {
 .tag-nav-list {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: var(--space-xs);
     list-style: none;
     margin: 0;
