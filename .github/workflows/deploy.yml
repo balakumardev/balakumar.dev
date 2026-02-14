@@ -1,0 +1,27 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'wp-content/themes/**'
+      - 'wp-content/plugins/**'
+      - 'deploy.sh'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          echo "107.161.23.124 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBDCE8Ngyd/sjy20sZrS4AKuu2E2F1pi2Qy90oaqa83SGQhyvslPxol0AAkJRDihlT3wqZyd+R04vWOetTR7nUiE=" >> ~/.ssh/known_hosts
+
+      - name: Deploy
+        run: |
+          chmod +x deploy.sh
+          SSH_KEY=~/.ssh/deploy_key ./deploy.sh

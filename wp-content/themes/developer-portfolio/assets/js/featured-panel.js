@@ -85,6 +85,27 @@
                 // saveState(true);
             }
         });
+
+        // Auto-hide on scroll down, show on scroll to top
+        var lastScrollY = window.scrollY;
+        var scrollThreshold = 200;
+        var autoHidden = false;
+
+        window.addEventListener("scroll", function() {
+            var currentScrollY = window.scrollY;
+
+            if (currentScrollY > scrollThreshold && !panel.classList.contains("is-collapsed")) {
+                // Scrolled past threshold - auto-hide
+                setCollapsed(panel, tab, true);
+                autoHidden = true;
+            } else if (currentScrollY <= 10 && autoHidden) {
+                // Scrolled back to top - restore if it was auto-hidden
+                setCollapsed(panel, tab, false);
+                autoHidden = false;
+            }
+
+            lastScrollY = currentScrollY;
+        }, { passive: true });
     }
 
     /**

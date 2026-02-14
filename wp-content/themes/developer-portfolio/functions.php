@@ -655,7 +655,8 @@ function developer_portfolio_filter_posts() {
                         </a>
                     </footer>
                 </div>
-                <div class="post-card-border"></div>
+                <div class="post-card-accent"></div>
+                <div class="post-card-glow"></div>
             </article>
             <?php
             $post_index++;
@@ -769,7 +770,8 @@ function developer_portfolio_load_more() {
                         </a>
                     </footer>
                 </div>
-                <div class="post-card-border"></div>
+                <div class="post-card-accent"></div>
+                <div class="post-card-glow"></div>
             </article>
             <?php
             $post_index++;

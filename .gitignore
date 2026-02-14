@@ -22,6 +22,5 @@ wp-content/uploads/
 *.tmp
 *.bak
 
-# Edge Browser Debug (Chrome DevTools MCP)
-.edge-debug-profile/
-.edge-debug-port
+# Chrome DevTools MCP
+.chrome-debug/

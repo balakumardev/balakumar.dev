@@ -198,9 +198,10 @@ $projects_query->max_num_pages = ceil($total_projects_filtered / $posts_per_page
                             </div>
                             <?php if ($is_featured) : ?>
                                 <span class="project-featured-badge" title="Featured Project">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                                         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                                     </svg>
+                                    <span class="featured-label">Featured</span>
                                 </span>
                             <?php endif; ?>
                             <?php developer_portfolio_edit_button(get_the_ID(), 'edit-button-card'); ?>
@@ -276,6 +277,7 @@ $projects_query->max_num_pages = ceil($total_projects_filtered / $posts_per_page
                             </a>
                         </div>
                     </div>
+                    <div class="project-card-accent"></div>
                     <div class="project-card-glow"></div>
                 </article>
             <?php

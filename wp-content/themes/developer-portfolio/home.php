@@ -152,7 +152,8 @@ $paged = (get_query_var("paged")) ? get_query_var("paged") : 1;
                             </a>
                         </footer>
                     </div>
-                    <div class="post-card-border"></div>
+                    <div class="post-card-accent"></div>
+                    <div class="post-card-glow"></div>
                 </article>
             <?php
                     $post_index++;

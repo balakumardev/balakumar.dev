@@ -75,7 +75,8 @@ get_header();
                             </a>
                         </footer>
                     </div>
-                    <div class="post-card-border"></div>
+                    <div class="post-card-accent"></div>
+                    <div class="post-card-glow"></div>
                 </article>
                 <?php
                     $post_index++;
