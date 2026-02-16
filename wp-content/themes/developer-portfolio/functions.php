@@ -15,10 +15,14 @@ if (!defined("ABSPATH")) {
  */
 require_once get_template_directory() . '/inc/admin-settings.php';
 require_once get_template_directory() . '/inc/class-featured-panel.php';
+require_once get_template_directory() . '/inc/class-announcement-bar.php';
 require_once get_template_directory() . '/inc/tag-navigation.php';
 
 // Initialize featured panel globally
 $GLOBALS['developer_portfolio_featured_panel'] = new Developer_Portfolio_Featured_Panel();
+
+// Initialize announcement bar globally
+$GLOBALS['developer_portfolio_announcement_bar'] = new Developer_Portfolio_Announcement_Bar();
 
 /**
  * Theme Setup
@@ -232,6 +236,38 @@ function developer_portfolio_enqueue_featured_panel_assets() {
     );
 }
 add_action("wp_enqueue_scripts", "developer_portfolio_enqueue_featured_panel_assets", 20);
+
+/**
+ * Enqueue Announcement Bar Assets
+ */
+function developer_portfolio_enqueue_announcement_bar_assets() {
+    if (!isset($GLOBALS['developer_portfolio_announcement_bar'])) {
+        return;
+    }
+
+    $bar = $GLOBALS['developer_portfolio_announcement_bar'];
+    if (!$bar->should_display()) {
+        return;
+    }
+
+    $theme_version = wp_get_theme()->get("Version");
+
+    wp_enqueue_style(
+        "developer-portfolio-announcement-bar",
+        get_template_directory_uri() . "/assets/css/announcement-bar.css",
+        array("developer-portfolio-main"),
+        $theme_version
+    );
+
+    wp_enqueue_script(
+        "developer-portfolio-announcement-bar",
+        get_template_directory_uri() . "/assets/js/announcement-bar.js",
+        array(),
+        $theme_version,
+        true
+    );
+}
+add_action("wp_enqueue_scripts", "developer_portfolio_enqueue_announcement_bar_assets", 20);
 
 /**
  * Register Widget Areas

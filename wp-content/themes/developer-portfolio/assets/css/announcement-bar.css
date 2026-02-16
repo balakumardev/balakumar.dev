@@ -1,0 +1,180 @@
+/**
+ * Announcement Bar Styles
+ *
+ * @package Developer_Portfolio
+ * @since 1.2.0
+ */
+
+/* ==========================================================================
+   Bar Container
+   ========================================================================== */
+
+.announcement-bar {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    z-index: 999;
+    height: 40px;
+    background: rgba(10, 25, 47, 0.95);
+    border-bottom: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-family: var(--font-sans);
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: opacity var(--transition-base), transform var(--transition-base);
+}
+
+.announcement-bar.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.announcement-bar.is-dismissing {
+    animation: announcement-slide-up var(--transition-base) forwards;
+}
+
+@keyframes announcement-slide-up {
+    to {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+}
+
+/* ==========================================================================
+   Inner Layout
+   ========================================================================== */
+
+.announcement-bar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--space-xl);
+    position: relative;
+}
+
+/* ==========================================================================
+   Rotation Items
+   ========================================================================== */
+
+.announcement-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.announcement-item.is-active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ==========================================================================
+   Elements
+   ========================================================================== */
+
+.announcement-label {
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+.announcement-link {
+    color: var(--color-text-primary);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color var(--transition-fast);
+}
+
+.announcement-link:hover {
+    color: var(--color-accent);
+}
+
+.announcement-sep {
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    opacity: 0.5;
+}
+
+.announcement-excerpt {
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.announcement-dismiss {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    font-size: var(--text-lg);
+    cursor: pointer;
+    padding: 0 var(--space-xs);
+    line-height: 1;
+    transition: color var(--transition-fast);
+    flex-shrink: 0;
+    position: absolute;
+    right: var(--space-xl);
+    z-index: 1;
+}
+
+.announcement-dismiss:hover {
+    color: var(--color-text-primary);
+}
+
+/* ==========================================================================
+   Body Offset When Bar Is Visible
+   ========================================================================== */
+
+body.has-announcement-bar .tag-navigation {
+    top: calc(var(--header-height) + 40px);
+    margin-top: calc(var(--header-height) + 40px);
+}
+
+body.has-announcement-bar.admin-bar .tag-navigation {
+    top: calc(var(--header-height) + 40px + 32px);
+}
+
+@media screen and (max-width: 782px) {
+    body.has-announcement-bar.admin-bar .tag-navigation {
+        top: calc(var(--header-height) + 40px + 46px);
+    }
+}
+
+/* Push content down on all pages when bar is visible */
+body.has-announcement-bar .site-content {
+    padding-top: 40px;
+}
+
+/* Pages WITH tag navigation: tag-nav margin-top already creates the offset,
+   so remove the extra content padding */
+body.has-announcement-bar .site:has(.tag-navigation) .site-content {
+    padding-top: 0;
+}
+
+/* ==========================================================================
+   Responsive - Hidden on Mobile
+   ========================================================================== */
+
+@media screen and (max-width: 768px) {
+    .announcement-bar.hide-on-mobile {
+        display: none !important;
+    }
+}

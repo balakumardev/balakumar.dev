@@ -102,6 +102,11 @@
     </header>
 
     <?php
+    // Announcement bar — pinned below the header
+    if (isset($GLOBALS['developer_portfolio_announcement_bar'])) {
+        $GLOBALS['developer_portfolio_announcement_bar']->render();
+    }
+
     // Show tag navigation on blog listing, category/tag archives, single blog posts, and search results
     // Note: is_home() && !is_front_page() = blog listing when static front page is set
     // is_category() || is_tag() = category and tag archives only (not project archives)
