@@ -30,13 +30,6 @@ rsync -avz $DRY_RUN \
     wp-content/themes/developer-portfolio/ \
     "$REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH/wp-content/themes/developer-portfolio/"
 
-rsync -avz $DRY_RUN \
-    --rsync-path="$REMOTE_RSYNC" \
-    -e "ssh $SSH_OPTS" \
-    --exclude='error_log' \
-    wp-content/themes/balakumar-dark/ \
-    "$REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH/wp-content/themes/balakumar-dark/"
-
 # Sync plugins
 echo "--- Syncing plugins..."
 rsync -avz $DRY_RUN \
