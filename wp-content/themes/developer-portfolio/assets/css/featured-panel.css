@@ -19,6 +19,14 @@
     display: flex;
     align-items: center;
     font-family: var(--font-sans);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.featured-panel.is-visible {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .featured-panel.panel-position-right {

@@ -472,20 +472,33 @@ UPDATE blog_options SET option_value = 'http://localhost:8082' WHERE option_name
 
 Other plugins (wp-githuber-md, akismet, etc.) are installed on the server but not tracked in git.
 
-### Visual Testing with agent-browser
+### Browser Testing (Chrome DevTools MCP)
 
-**For ALL UI testing, visual verification, and CSS debugging, use the `agent-browser` skill.**
+Chrome DevTools MCP is configured in `.mcp.json` with `--isolated` mode (auto-launches Chrome via puppeteer, no manual setup needed).
 
-**Invoke:** `Skill tool → skill: "agent-browser"`
+**Available MCP Tools:**
+
+| Tool | Description |
+|------|-------------|
+| `mcp__chrome-devtools__navigate_page` | Navigate to URLs |
+| `mcp__chrome-devtools__take_snapshot` | A11y tree with uids (preferred over screenshot) |
+| `mcp__chrome-devtools__take_screenshot` | Visual screenshots |
+| `mcp__chrome-devtools__click` | Click elements by uid |
+| `mcp__chrome-devtools__fill` | Type into inputs |
+| `mcp__chrome-devtools__evaluate_script` | Run JS in page |
+| `mcp__chrome-devtools__list_console_messages` | Get console output |
+| `mcp__chrome-devtools__list_network_requests` | Get network requests |
 
 **Testing Workflow:**
-1. `agent-browser open http://localhost:8082` - Navigate to local dev
-2. `agent-browser snapshot -i` - Get interactive element refs (`@e1`, `@e2`)
-3. `agent-browser click @e1` / `agent-browser fill @e2 "text"` - Interact
-4. `agent-browser screenshot` - Visual verification
-5. `agent-browser eval 'JS expression'` - Inspect computed styles/DOM
+1. `navigate_page` → `http://localhost:8082` (local dev) or `https://blog.balakumar.dev` (production)
+2. `take_snapshot` → Get a11y tree with element uids
+3. `click`/`fill` → Interact with elements by uid
+4. `take_screenshot` → Visual verification
+5. `evaluate_script` → Inspect computed styles/DOM
 
-**No MCP config or Chrome debug ports needed** — works out of the box.
+**Prefer `take_snapshot` over `take_screenshot`** — snapshots return uids for interaction.
+
+**Fallback:** If Chrome DevTools MCP can't handle a task (multi-page workflows, file uploads, persistent browser state), use `agent-browser` skill.
 
 ### Troubleshooting Local Dev
 

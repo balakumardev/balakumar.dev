@@ -1,7 +1,8 @@
 /**
  * Featured Panel JavaScript
  *
- * Handles panel expand/collapse interactions and state persistence.
+ * Scroll-triggered panel: hidden initially, fades in after scrolling
+ * past the hero section, shown as collapsed tab.
  *
  * @package Developer_Portfolio
  * @since 1.1.0
@@ -11,24 +12,8 @@
     "use strict";
 
     var STORAGE_KEY = "devPortfolio_featuredPanelCollapsed";
+    var SCROLL_THRESHOLD = 500;
 
-    /**
-     * Safe execute wrapper for error handling
-     *
-     * @param {Function} fn Function to execute
-     * @param {string} context Context for error logging
-     */
-    function safeExecute(fn, context) {
-        try {
-            fn();
-        } catch (e) {
-            console.warn("[Featured Panel] Error in " + context + ":", e.message);
-        }
-    }
-
-    /**
-     * Initialize the featured panel
-     */
     function initFeaturedPanel() {
         var panel = document.getElementById("featured-panel");
         if (!panel) {
@@ -37,116 +22,81 @@
 
         var tab = panel.querySelector(".featured-panel-tab");
         var closeBtn = panel.querySelector(".featured-panel-close");
-        var defaultCollapsed = panel.getAttribute("data-collapsed-default") === "true";
+        var isVisible = false;
 
-        // Restore state from sessionStorage (or use default)
-        var savedState = sessionStorage.getItem(STORAGE_KEY);
-        if (savedState !== null) {
-            var isCollapsed = savedState === "true";
-            setCollapsed(panel, tab, isCollapsed);
-        } else if (defaultCollapsed) {
-            setCollapsed(panel, tab, true);
+        // Always start hidden and collapsed
+        panel.classList.add("is-collapsed");
+        panel.classList.remove("is-visible");
+        if (tab) {
+            tab.setAttribute("aria-expanded", "false");
         }
 
-        // Tab click - expand panel
+        // If user already scrolled past threshold on page load (e.g. refresh mid-page)
+        if (window.scrollY > SCROLL_THRESHOLD) {
+            showPanel();
+        }
+
+        // Scroll listener — show/hide based on scroll position
+        window.addEventListener("scroll", function() {
+            if (window.scrollY > SCROLL_THRESHOLD && !isVisible) {
+                showPanel();
+            } else if (window.scrollY <= SCROLL_THRESHOLD && isVisible) {
+                hidePanel();
+            }
+        }, { passive: true });
+
+        // Tab click — expand panel
         if (tab) {
             tab.addEventListener("click", function() {
-                setCollapsed(panel, tab, false);
-                saveState(false);
+                setCollapsed(false);
             });
         }
 
-        // Close button - collapse panel
+        // Close button — collapse panel
         if (closeBtn) {
             closeBtn.addEventListener("click", function() {
-                setCollapsed(panel, tab, true);
-                saveState(true);
+                setCollapsed(true);
             });
         }
 
-        // Escape key - collapse panel
+        // Escape key — collapse panel
         document.addEventListener("keydown", function(e) {
             if (e.key === "Escape" && !panel.classList.contains("is-collapsed")) {
-                setCollapsed(panel, tab, true);
-                saveState(true);
-                // Focus the tab for accessibility
+                setCollapsed(true);
                 if (tab) {
                     tab.focus();
                 }
             }
         });
 
-        // Click outside to collapse (optional - remove if not desired)
-        document.addEventListener("click", function(e) {
-            if (!panel.contains(e.target) && !panel.classList.contains("is-collapsed")) {
-                // Don't auto-close on outside click - can be annoying
-                // Uncomment the following lines to enable this behavior:
-                // setCollapsed(panel, tab, true);
-                // saveState(true);
-            }
-        });
-
-        // Auto-hide on scroll down, show on scroll to top
-        var lastScrollY = window.scrollY;
-        var scrollThreshold = 200;
-        var autoHidden = false;
-
-        window.addEventListener("scroll", function() {
-            var currentScrollY = window.scrollY;
-
-            if (currentScrollY > scrollThreshold && !panel.classList.contains("is-collapsed")) {
-                // Scrolled past threshold - auto-hide
-                setCollapsed(panel, tab, true);
-                autoHidden = true;
-            } else if (currentScrollY <= 10 && autoHidden) {
-                // Scrolled back to top - restore if it was auto-hidden
-                setCollapsed(panel, tab, false);
-                autoHidden = false;
-            }
-
-            lastScrollY = currentScrollY;
-        }, { passive: true });
-    }
-
-    /**
-     * Set panel collapsed state
-     *
-     * @param {HTMLElement} panel Panel element
-     * @param {HTMLElement} tab Tab button element
-     * @param {boolean} collapsed Whether panel should be collapsed
-     */
-    function setCollapsed(panel, tab, collapsed) {
-        if (collapsed) {
-            panel.classList.add("is-collapsed");
-        } else {
-            panel.classList.remove("is-collapsed");
+        function showPanel() {
+            isVisible = true;
+            panel.classList.add("is-visible");
         }
 
-        // Update ARIA state
-        if (tab) {
-            tab.setAttribute("aria-expanded", collapsed ? "false" : "true");
+        function hidePanel() {
+            isVisible = false;
+            // Collapse first, then hide
+            setCollapsed(true);
+            panel.classList.remove("is-visible");
         }
-    }
 
-    /**
-     * Save state to sessionStorage
-     *
-     * @param {boolean} collapsed Whether panel is collapsed
-     */
-    function saveState(collapsed) {
-        try {
-            sessionStorage.setItem(STORAGE_KEY, collapsed ? "true" : "false");
-        } catch (e) {
-            // sessionStorage might be disabled or full
+        function setCollapsed(collapsed) {
+            if (collapsed) {
+                panel.classList.add("is-collapsed");
+            } else {
+                panel.classList.remove("is-collapsed");
+            }
+            if (tab) {
+                tab.setAttribute("aria-expanded", collapsed ? "false" : "true");
+            }
         }
     }
 
     // Initialize on DOM ready
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", function() {
-            safeExecute(initFeaturedPanel, "initFeaturedPanel");
-        });
+        document.addEventListener("DOMContentLoaded", initFeaturedPanel);
     } else {
-        safeExecute(initFeaturedPanel, "initFeaturedPanel");
+        initFeaturedPanel();
     }
 })();

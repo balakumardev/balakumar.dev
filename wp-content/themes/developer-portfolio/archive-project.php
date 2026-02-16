@@ -118,20 +118,9 @@ $projects_query->max_num_pages = ceil($total_projects_filtered / $posts_per_page
 
             <!-- Projects Stats -->
             <div class="projects-stats">
-                <?php
-                $project_types_count = wp_count_terms("project_type", array("hide_empty" => true));
-                if (is_wp_error($project_types_count)) {
-                    $project_types_count = 0;
-                }
-                ?>
                 <div class="projects-stat">
                     <span class="stat-number"><?php echo intval($total_projects); ?></span>
                     <span class="stat-text">Projects</span>
-                </div>
-                <span class="stat-separator">//</span>
-                <div class="projects-stat">
-                    <span class="stat-number"><?php echo intval($project_types_count); ?></span>
-                    <span class="stat-text">Categories</span>
                 </div>
             </div>
         </header>
